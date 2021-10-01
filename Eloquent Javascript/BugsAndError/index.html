@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Try/catch</title>
+</head>
+
+<body>
+  <!-- <script type="text/javascript" src="./useStrict.js">
+
+  </script> -->
+
+  <script type="text/javascript">
+    // class InputError extends Error {}
+    //
+    // function promptDirection(question) {
+    //   let result = prompt(question);
+    //   if (result.toLowerCase() == "left") return "L";
+    //   if (result.toLowerCase() == "right") return "R";
+    //   throw new InputError("invalid direction : " + result);
+    // }
+    //
+    // for (;;) {
+    //   try {
+    //     let dir = promptDirection("Where?");
+    //     console.log("You choose ", dir);
+    //     break;
+    //   } catch (e) {
+    //     if (e instanceof InputError) {
+    //       console.log("Not a valid direction. Try again.");
+    //     } else {
+    //       throw e;
+    //     }
+    //   }
+    // }
+
+    const box = {
+      locked: true,
+      unlock() {
+        this.locked = false;
+      },
+      lock() {
+        this.locked = true;
+      },
+      content: [],
+      get content() {
+        if (this.locked) throw new Error("Locked");
+        return this._content;
+      }
+    }
+
+    function withBoxUnlocked(body) {
+      let boxLockedOnEntry = box.locked;
+      if (boxLockedOnEntry) {
+        box.unlock();
+      }
+      try {
+        body();
+      } finally {
+        if (boxLockedOnEntry) {
+          box.lock();
+        }
+      }
+    }
+
+    withBoxUnlocked(function() {
+      box.content.push("gold piece");
+    })
+
+    console.log(box.locked);
+  </script>
+</body>
+
+</html>
